@@ -1,0 +1,25 @@
+server:
+  port: 8081
+spring:
+  application:
+    name: orderService
+  cloud:
+    nacos:
+      server-addr: localhost:8848
+#      namespace: public # 命名空间，默认为public
+#      group: DEFAULT_GROUP # 配置组，默认为DEFAULT_GROUP
+#      file-extension: yaml # 配置文件后缀，可以是yaml或properties
+#  datasource:
+#    url: jdbc:mysql://localhost:3306/demoTest?serverTimezone=UTC&useSSL=false
+#    username: root
+#    password: root
+#    driver-class-name: com.mysql.cj.jdbc.Driver
+#  jpa:
+#    show-sql: true
+#    hibernate:
+#      ddl-auto: update
+  redis:
+    host: localhost
+    port: 6379
+    database: 0
+    timeout: 5000 # 超时时间，单位毫秒

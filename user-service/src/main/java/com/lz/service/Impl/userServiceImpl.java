@@ -8,6 +8,7 @@ package com.lz.service.Impl;
  */
 
 import com.lz.exception.MyException;
+import com.lz.pojo.QUser;
 import com.lz.pojo.User;
 
 

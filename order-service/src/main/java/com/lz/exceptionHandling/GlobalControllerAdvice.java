@@ -120,7 +120,7 @@ public class GlobalControllerAdvice {
     }
     
     @ExceptionHandler(value = NoSuchFieldError.class)
-    public Result<String> NoSuchFieldError(NoSuchFieldError e) {
+    public Result<String> handleNoSuchFieldError(NoSuchFieldError e) {
         log.error("发生NoSuchFieldError系统异常！原因是:", e);
         return Result.error(e.getMessage());
     }

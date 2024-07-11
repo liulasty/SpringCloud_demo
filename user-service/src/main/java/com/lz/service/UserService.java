@@ -9,13 +9,12 @@ package com.lz.service;
 
 import com.lz.exception.MyException;
 import com.lz.pojo.User;
-import org.springframework.stereotype.Service;
 
 /**
  * @author lz
  */
 
-public interface userService {
+public interface UserService {
     
     String getUser();
     

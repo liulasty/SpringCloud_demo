@@ -13,7 +13,7 @@ import com.lz.pojo.QUserQuery;
 import com.lz.pojo.User;
 
 
-import com.lz.service.userService;
+import com.lz.service.UserService;
 import com.lz.util.StringUtils;
 
 import com.querydsl.core.types.ExpressionUtils;
@@ -38,7 +38,7 @@ import java.util.Optional;
 @Slf4j
 @Service
 @RefreshScope
-public class userServiceImpl implements userService {
+public class UserServiceImpl implements UserService {
 
 
     @Autowired

@@ -7,10 +7,11 @@ package com.lz;
  * @Description:
  */
 
+import com.lz.service.UserService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import com.lz.service.userService;
+
 
 /**
  * @author lz
@@ -19,7 +20,7 @@ import com.lz.service.userService;
 public class UserTest {
     
     @Autowired
-    private userService userService;
+    private UserService userService;
     
     @Test
     public void test1() {

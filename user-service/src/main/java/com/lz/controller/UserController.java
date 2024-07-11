@@ -13,7 +13,7 @@ import com.lz.exception.MyException;
 import com.lz.pojo.User;
 import com.lz.respositories.RedisRepository;
 import com.lz.result.Result;
-import com.lz.service.userService;
+import com.lz.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -36,7 +36,7 @@ import java.util.Map;
 public class UserController {
 
     @Autowired
-    private userService userService;
+    private UserService userService;
 
     @Autowired
     private RedisRepository redisRepository;

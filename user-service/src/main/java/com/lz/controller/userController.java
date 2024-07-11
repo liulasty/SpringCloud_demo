@@ -7,6 +7,9 @@ package com.lz.controller;
  * @Description:
  */
 
+import com.lz.Base.OrderClient;
+import com.lz.Base.UserClient;
+import com.lz.pojo.Order;
 import com.lz.exception.MyException;
 import com.lz.pojo.User;
 import com.lz.respositories.RedisRepository;
@@ -143,7 +146,7 @@ public class userController {
         if (redisEnabled) {
             User user_redis = (User) redisRepository.getObjectById("user",
                                                                    id + "");
-            log.info("user1 {} " , user_redis);
+            log.info("user1 {} ", user_redis);
             if (user_redis != null) {
                 return user_redis;
             }
@@ -156,4 +159,21 @@ public class userController {
         }
         throw new MyException("用户不存在");
     }
+
+    @Autowired
+    private OrderClient orderClient;
+
+    @GetMapping("/getOrder/{id}")
+    public void getUser1(@PathVariable("id") Long id) throws MyException {
+        String s = orderClient.getOrder();
+        System.out.println(s);
+        Order order = orderClient.getOrder(id);
+        if (order == null) {
+            throw new MyException("订单不存在");
+        }
+        System.out.println(order);
+
+    }
+
+
 }

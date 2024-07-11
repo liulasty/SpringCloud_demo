@@ -7,8 +7,11 @@ package com.lz.controller;
  * @Description:
  */
 
+import com.lz.annotation.NoReturnHandle;
 import com.lz.pojo.Order;
 import com.lz.respositories.RedisRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
@@ -26,10 +29,11 @@ import java.util.Map;
  * @author lz
  */
 @RestController
-@RequestMapping(value = "/orders")
+@RequestMapping(value = "/order")
 @RefreshScope
 public class orderController {
-    
+
+    private static final Logger log = LoggerFactory.getLogger(orderController.class);
     @Autowired
     private RestTemplate restTemplate;
 
@@ -41,19 +45,20 @@ public class orderController {
     
     @Autowired
     private OrderService orderService;
+
+    @Value("${pattern.dateformat}")
+    private String dateformat;
     
     @RequestMapping(value = "/getUser")
     public String getOrder()
     {
-        
         String url = "http://userService/users/getUser";
         String user = restTemplate.getForObject(url, String.class);
         System.out.println(user);
         return "Order";
     }
 
-    @Value("${pattern.dateformat}")
-    private String dateformat;
+    
 
     @GetMapping("/now")
     public String now(){
@@ -74,20 +79,7 @@ public class orderController {
         orderService.setOrder();
     }
 
-    /**
-     * 重置redis缓存
-     */
-    private void extracted() {
-        redisRepository.clearObjects("user");
-        Iterable<Order> allUser = orderService.getAllOrder();
-
-        // 转换为Map，使用用户ID作为键
-        Map<String, Order> userMap = new HashMap<>();
-        allUser.forEach(item -> userMap.put(String.valueOf(item.getId()),
-                                            item));
-
-        redisRepository.setObjectsByHash("order", userMap);
-    }
+    
 
     /**
      * 更新任务
@@ -145,10 +137,10 @@ public class orderController {
      *
      * @return 次序
      */
+    @NoReturnHandle
     @GetMapping("/get/{id}")
     public Order getOrder(@PathVariable("id") int id)
     {
-        
         if (redisEnabled) {
             /*
              * 从Redis存储中获取对象。
@@ -158,15 +150,30 @@ public class orderController {
             if (order_redis != null){
                 return order_redis;
             }
-           
-
         }
-        Order order = orderService.getOrder(id).get();
-        if(redisEnabled && order != null){
+        Order order = orderService.getOrder(id).isPresent() ? orderService.getOrder(id).get() : null;
+        log.info("从数据库中获取对象 {}", order);
+        if(redisEnabled){
             extracted();
+            return order;
+        }else if (order != null){
             return order;
         }
         throw new RuntimeException("没有找到该任务");
         
+    }
+
+    /**
+     * 重置redis缓存
+     */
+    private void extracted() {
+        redisRepository.clearObjects("user");
+        Iterable<Order> allUser = orderService.getAllOrder();
+
+        // 转换为Map，使用用户ID作为键
+        Map<String, Order> userMap = new HashMap<>();
+        allUser.forEach(item -> userMap.put(String.valueOf(item.getId()),
+                                            item));
+        redisRepository.setObjectsByHash("order", userMap);
     }
 }

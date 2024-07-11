@@ -7,8 +7,9 @@ package com.lz.service.Impl;
  * @Description:
  */
 
+import com.lz.Base.OrderClient;
 import com.lz.exception.MyException;
-import com.lz.pojo.QUser;
+import com.lz.pojo.QUserQuery;
 import com.lz.pojo.User;
 
 
@@ -45,10 +46,14 @@ public class userServiceImpl implements userService {
     
     @Resource
     private JPAQueryFactory jpaQueryFactory;
+
+    @Autowired
+    private OrderClient orderClient;
    
 
     @Override
     public String getUser() {
+        
         return "good";
     }
 
@@ -183,33 +188,33 @@ public class userServiceImpl implements userService {
         Predicate predicate = new BooleanBuilder();
         
         // 创建QUser对象，用于构建JPA查询语句
-        QUser qUser = QUser.user;
+        QUserQuery qUserQuery = QUserQuery.user;
         // 如果id不为空，则添加id的查询条件
         if (id != null){
             // 将id的查询条件与之前的条件进行合并
             predicate = ExpressionUtils.and(predicate,
-                                            qUser.id.gt(Math.toIntExact(id)));
+                                            qUserQuery.id.gt(Math.toIntExact(id)));
         }else {
             predicate = ExpressionUtils.and(predicate,
-                                            qUser.id.gt(0));
+                                            qUserQuery.id.gt(0));
         }
         
         // 根据QUser对象构建JPA查询语句，选择id、name、age、sex属性
         JPAQuery<User> jpaQuery = jpaQueryFactory.select(Projections.bean(User.class,
-                                                                      qUser.id,
-                                                                      qUser.name,
-                                                                      qUser.age,
-                                                                      qUser.sex)
+                                                                          qUserQuery.id,
+                                                                          qUserQuery.name,
+                                                                          qUserQuery.age,
+                                                                          qUserQuery.sex)
                 )
                 .where(predicate)
-                .from(qUser);
+                .from(qUserQuery);
         // 通过JPA查询获取特定实体的数量
         long count = jpaQuery.fetchCount();
 
 
         // 执行查询，按照id升序排序，分页查询，每次返回10条记录，从第0条开始
         List<User> users =
-                jpaQuery.orderBy(qUser.id.asc())
+                jpaQuery.orderBy(qUserQuery.id.asc())
                         .limit(10)
                         .offset(0)
                         .fetch();
@@ -219,9 +224,9 @@ public class userServiceImpl implements userService {
         users.forEach(System.out::println);
 
 
-        // JPAQuery<Tuple> select = jpaQueryFactory.selectFrom(qUser).select(qUser.id, qUser.name,
-        //                                                                   qUser.age, qUser.sex)
-        //         .where(qUser.id.eq(Math.toIntExact(id)));
+        // JPAQuery<Tuple> select = jpaQueryFactory.selectFrom(qUserQuery).select(qUserQuery.id, qUserQuery.name,
+        //                                                                   qUserQuery.age, qUserQuery.sex)
+        //         .where(qUserQuery.id.eq(Math.toIntExact(id)));
         // select.fetch().forEach(System.out::println);
         
 

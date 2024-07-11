@@ -16,11 +16,11 @@ import com.querydsl.core.types.Path;
  * @date 2024/07/10 15:46:30
  */
 @Generated("com.querydsl.codegen.DefaultEntitySerializer")
-public class QUser extends EntityPathBase<User> {
+public class QUserQuery extends EntityPathBase<User> {
 
     private static final long serialVersionUID = -509001982L;
 
-    public static final QUser user = new QUser("user");
+    public static final QUserQuery user = new QUserQuery("user");
 
     public final NumberPath<Integer> age = createNumber("age", Integer.class);
 
@@ -30,15 +30,15 @@ public class QUser extends EntityPathBase<User> {
 
     public final StringPath sex = createString("sex");
 
-    public QUser(String variable) {
+    public QUserQuery(String variable) {
         super(User.class, forVariable(variable));
     }
 
-    public QUser(Path<? extends User> path) {
+    public QUserQuery(Path<? extends User> path) {
         super(path.getType(), path.getMetadata());
     }
 
-    public QUser(PathMetadata metadata) {
+    public QUserQuery(PathMetadata metadata) {
         super(User.class, metadata);
     }
 

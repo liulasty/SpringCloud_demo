@@ -58,9 +58,15 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public Optional<Order> getOrder(int id) {
+        Optional<Order> byId = orderRepository.findById(id);
+        if (!byId.isPresent()){
+            log.info("order is null");
+            throw new RuntimeException("order is null");
+        }else {
+            Order order = byId.get();
+        }
 
-
-        return orderRepository.findById(id);
+        return byId;
     }
 
     /**

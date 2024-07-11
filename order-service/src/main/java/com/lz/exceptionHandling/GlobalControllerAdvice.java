@@ -127,7 +127,7 @@ public class GlobalControllerAdvice {
     
     @ExceptionHandler(value = RuntimeException.class)
     public Result<String> exceptionHandler(RuntimeException e) {
-        log.error("发生系统异常！原因是:", e);
+        log.error("发生 RuntimeException系统异常！原因是:", e);
         return Result.error(e.getMessage());
     }
 

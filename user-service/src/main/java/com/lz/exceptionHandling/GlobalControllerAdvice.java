@@ -94,7 +94,7 @@ public class GlobalControllerAdvice {
 
     @ExceptionHandler(value = NullPointerException.class)
     public Result<String> exceptionHandler(NullPointerException e) {
-        log.error("发生系统异常！原因是:", e);
+        log.error("发生系统异常！原因是NullPointerException:", e);
         return Result.error(e.getMessage());
     }
 

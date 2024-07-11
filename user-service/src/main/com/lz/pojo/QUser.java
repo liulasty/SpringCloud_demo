@@ -10,7 +10,7 @@ import com.querydsl.core.types.Path;
 
 
 /**
- * QUser 是 User 的 Querydsl 查询类型
+ * QUser is a Querydsl query type for User
  */
 @Generated("com.querydsl.codegen.DefaultEntitySerializer")
 public class QUser extends EntityPathBase<User> {
@@ -40,3 +40,4 @@ public class QUser extends EntityPathBase<User> {
     }
 
 }
+

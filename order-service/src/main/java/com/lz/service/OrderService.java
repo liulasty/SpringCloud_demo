@@ -22,4 +22,6 @@ public interface OrderService {
     void addOrder(Order order);
 
     void deleteOrder(int id);
+
+    void updateOrder(Long id, Order order);
 }

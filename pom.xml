@@ -12,6 +12,7 @@
 		<module>user-service</module>
 		<module>order-service</module>
 		<module>feign</module>
+		<module>gateway</module>
 	</modules>
 	<!-- 打包格式 -->
 	<packaging>pom</packaging>

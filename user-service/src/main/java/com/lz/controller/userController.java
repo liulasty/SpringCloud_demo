@@ -31,7 +31,7 @@ import java.util.Map;
  * @author lz
  */
 @RestController
-@RequestMapping(value = "/users")
+@RequestMapping(value = "/user")
 @RefreshScope
 @Slf4j
 public class userController {
@@ -68,7 +68,12 @@ public class userController {
         return data;
     }
 
-    @GetMapping("/getAll")
+    /**
+     * 获取 全部用户
+     *
+     * @return {@code Iterable<User> }
+     */
+    @GetMapping
     public Iterable<User> getUser3() {
         return userService.getAllUser();
     }
@@ -78,7 +83,7 @@ public class userController {
      *
      * @param user 用户
      */
-    @PostMapping("/add")
+    @PostMapping
     public String addUser(@RequestBody User user) {
         System.out.println("user:" + user);
         userService.addUser(user);
@@ -94,7 +99,7 @@ public class userController {
      *
      * @param id 用户id
      */
-    @DeleteMapping("/delete/{id}")
+    @DeleteMapping("/{id}")
     public String deleteUser(@PathVariable int id) throws MyException {
         userService.deleteUser(id);
         if (redisEnabled) {
@@ -108,7 +113,7 @@ public class userController {
      *
      * @param user 用户
      */
-    @PutMapping("/update")
+    @PutMapping
     public String updateUser(@RequestBody User user) throws MyException {
 
         userService.updateUser(user);
@@ -141,7 +146,7 @@ public class userController {
      *
      * @return 用户
      */
-    @GetMapping("/get/{id}")
+    @GetMapping("/{id}")
     public User getUser(@PathVariable("id") int id) throws MyException {
         if (redisEnabled) {
             User user_redis = (User) redisRepository.getObjectById("user",
@@ -155,6 +160,8 @@ public class userController {
         if (redisEnabled && userById != null) {
             // 更新缓存
             extracted();
+            return userById;
+        }else if (userById != null) {
             return userById;
         }
         throw new MyException("用户不存在");

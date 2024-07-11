@@ -1,0 +1,45 @@
+# 忽略Maven构建输出
+target/
+
+# 忽略IntelliJ IDEA项目文件
+.idea/
+*.iml
+
+# 忽略Eclipse项目文件
+.project
+.classpath
+
+# 忽略NetBeans项目文件
+nbproject/private/
+
+# 忽略本地Maven存储库
+~/.m2/repository/
+
+# 忽略本地设置
+.settings/
+
+# 忽略本地Maven Wrapper文件
+.mvn/wrapper/maven-wrapper.jar
+.mvn/wrapper/maven-wrapper.properties
+
+# 忽略生成的源文件
+src/main/generated/
+src/test/generated/
+
+# 忽略本地环境特定的属性
+local.properties
+application-local.properties
+
+# 忽略日志文件
+*.log
+
+# 忽略临时文件
+*.tmp
+*.swp
+*.swo
+
+# Ignore system files on macOS
+.DS_Store
+
+# Ignore system files on Windows
+Thumbs.db

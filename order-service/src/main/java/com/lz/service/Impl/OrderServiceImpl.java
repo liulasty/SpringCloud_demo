@@ -140,5 +140,29 @@ public class OrderServiceImpl implements OrderService {
         orderRepository.deleteById(id);
     }
 
+    @Override
+    public void updateOrder(Long id, Order order) {
+        orderRepository.findById(Math.toIntExact(id)).map(order_db -> {
+            if (order.getId() != null) {
+                order_db.setId(order.getId());
+            }
+            if (!StringUtils.isEmpty(order.getName())) {
+                order_db.setName(order.getName());
+            }
+            if (!StringUtils.isEmpty(order.getOrderInfo())) {
+                order_db.setOrderInfo(order.getOrderInfo());
+            }
+            if (order.getOrderStart() != null) {
+                order_db.setOrderStart(order.getOrderStart());
+            }
+            if (order.getOrderEnd() != null) {
+                order_db.setOrderEnd(order.getOrderEnd());
+            }
+            return orderRepository.save(order_db);
+            
+                                         }
+        ).orElseThrow(() -> new RuntimeException("order is null"));
+    }
+
 
 }

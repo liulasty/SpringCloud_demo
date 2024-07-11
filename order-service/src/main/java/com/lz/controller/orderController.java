@@ -10,6 +10,7 @@ package com.lz.controller;
 import com.lz.annotation.NoReturnHandle;
 import com.lz.pojo.Order;
 import com.lz.respositories.RedisRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +32,7 @@ import java.util.Map;
 @RestController
 @RequestMapping(value = "/order")
 @RefreshScope
+
 public class orderController {
 
     private static final Logger log = LoggerFactory.getLogger(orderController.class);
@@ -49,25 +51,19 @@ public class orderController {
     @Value("${pattern.dateformat}")
     private String dateformat;
     
-    @RequestMapping(value = "/getUser")
-    public String getOrder()
-    {
-        String url = "http://userService/users/getUser";
-        String user = restTemplate.getForObject(url, String.class);
-        System.out.println(user);
-        return "Order";
-    }
-
-    
-
     @GetMapping("/now")
     public String now(){
         return LocalDateTime.now().format(DateTimeFormatter.ofPattern(dateformat));
     }
-    
-    
-    @GetMapping("/all")
-    public Iterable<Order> getOrder3()
+
+
+    /**
+     * 获取 全部任务
+     *
+     * @return {@code Iterable<Order> }
+     */
+    @GetMapping
+    public Iterable<Order> getALLOrder()
     {
         
         return orderService.getAllOrder();
@@ -86,10 +82,10 @@ public class orderController {
      *
      * @param order 次序
      */
-    @PutMapping("/update")
-    public String updateOrder(@RequestBody Order order)
+    @PutMapping("/{id}")
+    public String updateOrder(@PathVariable("id") Long id,@RequestBody Order order)
     {   
-        orderService.updateOrder(order);
+        orderService.updateOrder(id,order);
         if (redisEnabled) {
             extracted();
         }
@@ -103,7 +99,7 @@ public class orderController {
      *
      * @param order 次序
      */
-    @PostMapping("/add")
+    @PostMapping
     public String addOrder(@RequestBody Order order)
     {
         orderService.addOrder(order);
@@ -117,10 +113,10 @@ public class orderController {
     /**
      * 删除任务
      *
-     * @param id 同上
+     * @param id 任务id
      */
-    @DeleteMapping("/delete/{id}")
-    public String deleteOrder(@PathVariable int id)
+    @DeleteMapping("/{id}")
+    public String deleteOrder(@PathVariable("id") int id)
     {
         orderService.deleteOrder(id);
         if (redisEnabled) {
@@ -133,12 +129,12 @@ public class orderController {
     /**
      * 获取任务
      *
-     * @param id 同上
+     * @param id 任务id
      *
      * @return 次序
      */
     @NoReturnHandle
-    @GetMapping("/get/{id}")
+    @GetMapping("/{id}")
     public Order getOrder(@PathVariable("id") int id)
     {
         if (redisEnabled) {
@@ -152,8 +148,9 @@ public class orderController {
             }
         }
         Order order = orderService.getOrder(id).isPresent() ? orderService.getOrder(id).get() : null;
-        log.info("从数据库中获取对象 {}", order);
+        
         if(redisEnabled){
+            log.info("将对象 {} 存储到Redis中", order);
             extracted();
             return order;
         }else if (order != null){

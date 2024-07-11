@@ -11,7 +11,10 @@ import com.lz.exception.MyException;
 import com.lz.pojo.User;
 
 /**
+ * 用户服务
+ *
  * @author lz
+ * @date 2024/07/11 16:49:35
  */
 
 public interface UserService {

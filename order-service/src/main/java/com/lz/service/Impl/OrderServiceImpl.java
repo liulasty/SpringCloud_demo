@@ -7,6 +7,7 @@ package com.lz.service.Impl;
  * @Description:
  */
 
+import com.lz.Base.UserClient;
 import com.lz.pojo.Order;
 import com.lz.respositories.OrderRepository;
 import com.lz.respositories.RedisRepository;
@@ -31,6 +32,9 @@ public class OrderServiceImpl implements OrderService {
     
     @Autowired
     private OrderRepository orderRepository;
+    
+    @Autowired
+    private UserClient userClient;
 
     
 
@@ -49,9 +53,9 @@ public class OrderServiceImpl implements OrderService {
             order_new.setUserId(i);
             order_new.setName(i+"day");
             order_new.setOrderInfo("01day");
-            order_new.setOrderStart(LocalDateTime.now());
+            order_new.setOrderStart(LocalDateTime.now().withNano(0));
             //设置一天后的时间
-            order_new.setOrderEnd(LocalDateTime.now().plusDays(1));
+            order_new.setOrderEnd(LocalDateTime.now().withNano(0).plusDays(1));
             orderRepository.save(order_new);
         }
     }

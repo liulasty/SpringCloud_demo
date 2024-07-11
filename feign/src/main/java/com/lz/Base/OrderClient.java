@@ -9,17 +9,36 @@ package com.lz.Base;
 
 import com.lz.pojo.Order;
 import org.springframework.cloud.openfeign.FeignClient;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 /**
  * @author lz
  */
 @FeignClient(value = "orderService",url = "http://localhost:8081")
 public interface OrderClient {
-    @GetMapping(value = {"/order/{id}"})
-    Order getOrder(@PathVariable("id") Long id);
     
-    @GetMapping(value = {"/order/getUser"})
-    String getOrder();
+    @GetMapping("/order/now")
+    String now();
+    
+    @GetMapping("/order")
+    List<Order> findAllOrder();
+    
+    @GetMapping("/order/set")
+    void setOrder();
+    
+    @PutMapping("/order/{id}")
+    String updateOrder(@PathVariable("id") Long id,@RequestBody Order order);
+    
+    @PostMapping
+    String addOrder(@RequestBody Order order);
+    
+    @DeleteMapping("/order/{id}")
+    String deleteOrder(@PathVariable("id") Long id);
+    
+    @GetMapping("/order/{id}")
+    Order findOrderById(@PathVariable("id") Long id);
+    
+    
 }

@@ -22,12 +22,17 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 
 /**
+ * 用户控制器
+ *
  * @author lz
+ * @date 2024/07/11 16:52:41
  */
 @RestController
 @RequestMapping(value = "/user")
@@ -51,15 +56,13 @@ public class UserController {
     private String data;
 
     @RequestMapping(value = "/getUser")
-    public Result<String> getUser() {
-        String user = userService.getUser();
-        return Result.success(user);
+    public String getUser() {
+        return userService.getUser();
     }
 
     @GetMapping("/now")
-    public Result<String> now() {
-        String format = LocalDateTime.now().format(DateTimeFormatter.ofPattern(dateformat));
-        return Result.success(format);
+    public String now() {
+        return LocalDateTime.now().format(DateTimeFormatter.ofPattern(dateformat));
     }
 
     @GetMapping("/getData")
@@ -70,11 +73,13 @@ public class UserController {
     /**
      * 获取 全部用户
      *
-     * @return {@code Iterable<User> }
+     * @return {@code List<User> }
      */
     @GetMapping
-    public Iterable<User> getUser3() {
-        return userService.getAllUser();
+    public List<User> getUser3() {
+        ArrayList<User> list = new ArrayList<>();
+        userService.getAllUser().forEach(list::add);
+        return list;
     }
 
     /**
@@ -112,8 +117,8 @@ public class UserController {
      *
      * @param user 用户
      */
-    @PutMapping
-    public String updateUser(@RequestBody User user) throws MyException {
+    @PutMapping("/{id}")
+    public String updateUser(@PathVariable("id") int id, @RequestBody User user) throws MyException {
 
         userService.updateUser(user);
         if (redisEnabled) {
@@ -147,10 +152,14 @@ public class UserController {
      */
     @GetMapping("/{id}")
     public User getUser(@PathVariable("id") int id) throws MyException {
+        if (id <= 0){
+            throw new MyException("用户不存在");
+        }
+        
         if (redisEnabled) {
             User user_redis = (User) redisRepository.getObjectById("user",
                                                                    id + "");
-            log.info("user1 {} ", user_redis);
+            
             if (user_redis != null) {
                 return user_redis;
             }
@@ -169,11 +178,18 @@ public class UserController {
     @Autowired
     private OrderClient orderClient;
 
+    /**
+     * 获取 user1
+     * @Description 调用feign客户端调用order-service模块
+     * @param id 订单id
+     *
+     * @throws MyException 订单不存在
+     */
     @GetMapping("/getOrder/{id}")
     public void getUser1(@PathVariable("id") Long id) throws MyException {
-        String s = orderClient.getOrder();
+        String s = orderClient.now();
         System.out.println(s);
-        Order order = orderClient.getOrder(id);
+        Order order = orderClient.findOrderById(id);
         if (order == null) {
             throw new MyException("订单不存在");
         }

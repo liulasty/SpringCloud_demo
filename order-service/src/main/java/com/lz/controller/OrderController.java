@@ -22,7 +22,9 @@ import com.lz.service.OrderService;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -48,7 +50,12 @@ public class OrderController {
 
     @Value("${pattern.dateformat}")
     private String dateformat;
-    
+
+    /**
+     * 获取现在时间
+     *
+     * @return {@code String }
+     */
     @GetMapping("/now")
     public String now(){
         return LocalDateTime.now().format(DateTimeFormatter.ofPattern(dateformat));
@@ -61,12 +68,17 @@ public class OrderController {
      * @return {@code Iterable<Order> }
      */
     @GetMapping
-    public Iterable<Order> getALLOrder()
+    public List<Order> getALLOrder()
     {
-        
-        return orderService.getAllOrder();
+        Iterable<Order> allOrder = orderService.getAllOrder();
+        ArrayList<Order> list = new ArrayList<>();
+        allOrder.forEach(list::add);
+        return list;
     }
-    
+
+    /**
+     * 设置任务
+     */
     @GetMapping("/set")
     public void setOrder()
     {

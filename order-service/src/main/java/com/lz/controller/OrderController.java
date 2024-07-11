@@ -10,7 +10,6 @@ package com.lz.controller;
 import com.lz.annotation.NoReturnHandle;
 import com.lz.pojo.Order;
 import com.lz.respositories.RedisRepository;
-import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,10 +31,9 @@ import java.util.Map;
 @RestController
 @RequestMapping(value = "/order")
 @RefreshScope
+public class OrderController {
 
-public class orderController {
-
-    private static final Logger log = LoggerFactory.getLogger(orderController.class);
+    private static final Logger log = LoggerFactory.getLogger(OrderController.class);
     @Autowired
     private RestTemplate restTemplate;
 

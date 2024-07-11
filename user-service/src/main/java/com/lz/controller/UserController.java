@@ -8,7 +8,6 @@ package com.lz.controller;
  */
 
 import com.lz.Base.OrderClient;
-import com.lz.Base.UserClient;
 import com.lz.pojo.Order;
 import com.lz.exception.MyException;
 import com.lz.pojo.User;
@@ -34,7 +33,7 @@ import java.util.Map;
 @RequestMapping(value = "/user")
 @RefreshScope
 @Slf4j
-public class userController {
+public class UserController {
 
     @Autowired
     private userService userService;

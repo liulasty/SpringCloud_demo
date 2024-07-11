@@ -1,10 +1,11 @@
 package com.lz.result;
 
-import lombok.AllArgsConstructor;
+
 import lombok.Data;
-import lombok.NoArgsConstructor;
+
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -12,19 +13,27 @@ import java.util.List;
  * @author lz
  */
 @Data
-@AllArgsConstructor
-@NoArgsConstructor
-
 public class PageResult<T> implements Serializable {
 
-    private long total; //总记录数
+    /**
+     * 总记录数
+     */
+    private long total; 
 
     /**
     当前页数据集合
      */
-    private List<T> records;
+    private  List<T> records;
 
-    
-    
-    
+    public PageResult(long total, List<T> records) {
+        this.total = total;
+        this.records = new ArrayList<>(records); // 或者使用不可变列表
+    }
+
+
+
+
+
+
+
 }

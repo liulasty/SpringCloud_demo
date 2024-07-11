@@ -62,8 +62,6 @@ public class OrderServiceImpl implements OrderService {
         if (!byId.isPresent()){
             log.info("order is null");
             throw new RuntimeException("order is null");
-        }else {
-            Order order = byId.get();
         }
 
         return byId;

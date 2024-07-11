@@ -2,7 +2,6 @@ package com.lz;
 
 
 import com.lz.Base.OrderClient;
-import com.lz.Base.UserClient;
 import com.lz.config.DefaultFeignConfiguration;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -22,9 +21,9 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
 @EnableFeignClients(
         clients = {OrderClient.class},defaultConfiguration=
         {DefaultFeignConfiguration.class})
-public class userApplication {
+public class UserApplication {
     public static void main(String[] args) {
-        SpringApplication.run(userApplication.class, args);
+        SpringApplication.run(UserApplication.class, args);
         System.out.println("Hello world!");
     }
 }

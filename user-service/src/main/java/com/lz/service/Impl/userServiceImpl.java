@@ -210,6 +210,7 @@ public class userServiceImpl implements userService {
                 .from(qUserQuery);
         // 通过JPA查询获取特定实体的数量
         long count = jpaQuery.fetchCount();
+        System.out.println("count:" + count);
 
 
         // 执行查询，按照id升序排序，分页查询，每次返回10条记录，从第0条开始

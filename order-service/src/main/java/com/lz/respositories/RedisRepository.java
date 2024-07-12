@@ -24,6 +24,14 @@ public class RedisRepository {
         this.hashOps = redisTemplate.opsForHash();
     }
 
+    public void set(String key, Object value) {
+        redisTemplate.opsForValue().set(key, value);
+    }
+
+    public Object get(String key) {
+        return redisTemplate.opsForValue().get(key);
+    }
+
     //刪除對應的鍵
     public boolean remove(String key) {
         Boolean delete = redisTemplate.delete(key);

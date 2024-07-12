@@ -3,16 +3,16 @@ server:
 spring:
   application:
     name: gateway
-  cloud:
-    nacos:
-      server-addr: localhost:8848
-    gateway:
-      routes: # 网关路由配置
-        - id: user-service
-          uri: lb://userService
-          predicates:
-            - Path=/user/**
-        - id: order-service
-          uri: lb://orderService
-          predicates: # 路由断言，也就是判断请求是否符合路由规则的条件
-            - Path=/order/**
+#  cloud:
+#    nacos:
+#      server-addr: localhost:8848
+#    gateway:
+#      routes: # 网关路由配置
+#        - id: user-service
+#          uri: lb://userService
+#          predicates:
+#            - Path=/user/**
+#        - id: order-service
+#          uri: lb://orderService
+#          predicates: # 路由断言，也就是判断请求是否符合路由规则的条件
+#            - Path=/order/**

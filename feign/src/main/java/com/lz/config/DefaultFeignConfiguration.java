@@ -1,6 +1,7 @@
 package com.lz.config;
 
-import feign.Logger;
+import com.lz.Interceptor.FeignRequestHeaderInterceptor;
+import feign.Logger.Level;
 import org.springframework.context.annotation.Bean;
 
 /**
@@ -19,7 +20,15 @@ public class DefaultFeignConfiguration {
      * @return Feign客户端的日志级别
      */
     @Bean
-    public Logger.Level logLevel(){
-        return Logger.Level.FULL;
+    public Level logLevel(){
+        return Level.FULL;
+    }
+    
+
+    //配置feign客服端的拦截器
+    @Bean
+    public FeignRequestHeaderInterceptor requestInterceptor() {
+        
+        return new FeignRequestHeaderInterceptor();
     }
 }

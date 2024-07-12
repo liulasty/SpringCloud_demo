@@ -1,11 +1,15 @@
 package com.lz.config;
 
 
+import com.lz.interceptor.SimpleInterceptor;
 import com.lz.json.JacksonObjectMapper;
+import com.lz.respositories.RedisRepository;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport;
 
 import java.util.List;
@@ -16,6 +20,9 @@ import java.util.List;
 @Configuration
 @Slf4j
 public class WebMvcConfiguration extends WebMvcConfigurationSupport {
+
+    @Autowired
+    private RedisRepository redisRepository;
 
   
     /**
@@ -31,5 +38,10 @@ public class WebMvcConfiguration extends WebMvcConfigurationSupport {
         converter.setObjectMapper(new JacksonObjectMapper());
         //将自己的消息转化器加入容器中
         converters.add(0,converter);
+    }
+    
+    @Override
+    protected void addInterceptors(InterceptorRegistry registry) {
+        registry.addInterceptor(new SimpleInterceptor(redisRepository));
     }
 }

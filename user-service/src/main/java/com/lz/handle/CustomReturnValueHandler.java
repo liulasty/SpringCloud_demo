@@ -21,7 +21,10 @@ import org.springframework.web.servlet.HandlerMapping;
 import javax.servlet.http.HttpServletRequest;
 
 /**
+ * 自定义统一返回值处理程序
+ *
  * @author lz
+ * @date 2024/07/12 10:02:27
  */
 @Slf4j
 public class CustomReturnValueHandler implements HandlerMethodReturnValueHandler {
@@ -57,6 +60,8 @@ public class CustomReturnValueHandler implements HandlerMethodReturnValueHandler
                                   NativeWebRequest webRequest) throws Exception {
         HttpServletRequest nativeRequest = webRequest.getNativeRequest(HttpServletRequest.class);
         log.info("返回值类型：{}", returnType.getParameterType().getName());
+        
+        
         // 判断外层是否由Result包裹
         if (returnValue instanceof Result) {
             this.returnValueHandler.handleReturnValue(returnValue, returnType, mavContainer, webRequest);
@@ -67,11 +72,21 @@ public class CustomReturnValueHandler implements HandlerMethodReturnValueHandler
         if (nativeRequest != null) {
             String method = nativeRequest.getMethod();
         }
+        
 
         // 判断此方法上是否有直接放行不处理返回值的注解
         if (nativeRequest==null){
             this.returnValueHandler.handleReturnValue(returnValue, returnType,
                                                       mavContainer, webRequest);
+        }
+        // 从请求头中获取"feign"字段的值
+        String feignHeader = nativeRequest.getHeader("X-Feign-Request");
+        if (feignHeader != null && !feignHeader.isEmpty()) {
+            // 如果请求头中存在"feign"字段，你可以在这里添加相应的处理逻辑
+            log.info("请求头中检测到'X-Feign-Request'字段，值为: {}", feignHeader);
+            // 根据需要进行后续操作...
+            this.returnValueHandler.handleReturnValue(returnValue, returnType, mavContainer, webRequest);
+            return;
         }
         /*
           从原生请求中获取最佳匹配的处理器方法。

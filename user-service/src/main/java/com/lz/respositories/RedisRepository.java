@@ -3,6 +3,7 @@ package com.lz.respositories;
 import com.lz.pojo.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.RedisSystemException;
 import org.springframework.data.redis.core.HashOperations;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -25,9 +26,18 @@ public class RedisRepository {
     private final RedisTemplate<String, Object> redisTemplate;
     private final HashOperations<String, String, Object> hashOps;
 
+    @Autowired
     public RedisRepository(RedisTemplate<String, Object> redisTemplate) {
         this.redisTemplate = redisTemplate;
         this.hashOps = redisTemplate.opsForHash();
+    }
+    
+    public void set(String key, Object value) {
+        redisTemplate.opsForValue().set(key, value);
+    }
+    
+    public Object get(String key) {
+        return redisTemplate.opsForValue().get(key);
     }
     
     //刪除對應的鍵

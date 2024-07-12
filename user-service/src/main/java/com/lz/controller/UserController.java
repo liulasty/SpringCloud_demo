@@ -67,7 +67,10 @@ public class UserController {
 
     @GetMapping("/getData")
     public String getUser2() {
-        return data;
+        Object result =  redisRepository.get("JWT-token");
+        System.out.println(result);
+        redisRepository.set("gateway-token", "1234567");
+        return data+":"+result;
     }
 
     /**
@@ -191,7 +194,7 @@ public class UserController {
         System.out.println(s);
         Order order = orderClient.findOrderById(id);
         if (order == null) {
-            throw new MyException("订单不存在");
+            throw new MyException("任务不存在");
         }
         System.out.println(order);
 

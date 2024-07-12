@@ -81,7 +81,7 @@ public class CustomFilter implements GlobalFilter {
 
 
         }
-        
+        // 修改请求对象。添加一个请求头
         exchange.getRequest().mutate().header("gateway-token", gateway).build();
         /*
         调用chain.filter(exchange)方法来继续执行后续的过滤器。

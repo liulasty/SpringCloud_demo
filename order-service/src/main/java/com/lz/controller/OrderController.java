@@ -157,7 +157,7 @@ public class OrderController {
                 return order_redis;
             }
         }
-        Order order = orderService.getOrder(id).isPresent() ? orderService.getOrder(id).get() : null;
+        Order order = orderService.getOrder(id);
         
         if(redisEnabled){
             log.info("将对象 {} 存储到Redis中", order);

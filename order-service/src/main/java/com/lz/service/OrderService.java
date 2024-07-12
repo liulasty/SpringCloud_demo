@@ -15,7 +15,7 @@ public interface OrderService {
     
     void setOrder();
 
-    Optional<Order> getOrder(int orderId);
+    Order getOrder(int orderId);
     
     void updateOrder(Order order);
 

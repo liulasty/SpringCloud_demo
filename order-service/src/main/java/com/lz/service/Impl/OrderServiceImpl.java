@@ -61,14 +61,17 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public Optional<Order> getOrder(int id) {
+    public Order getOrder(int id) {
         Optional<Order> byId = orderRepository.findById(id);
+        /* 检查是否存在指定ID的元素 */
         if (!byId.isPresent()){
             log.info("order is null");
             throw new RuntimeException("order is null");
         }
+        /* 返回结果 */
+        Order order = byId.get();
 
-        return byId;
+        return order;
     }
 
     /**

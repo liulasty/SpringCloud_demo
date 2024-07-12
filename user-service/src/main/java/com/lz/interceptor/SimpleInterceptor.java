@@ -41,13 +41,10 @@ public class SimpleInterceptor implements HandlerInterceptor {
         Boolean isIntercept = false;
         // 返回false表示拦截请求，不再继续调用其他的拦截器或处理器
         String queryString = request.getHeader("gateway-token");
-        String token_redis = "";
         Object redis = null;
-        try {
-            redis = redisRepository.get("gateway-token");
-        } catch (Exception e) {
-            System.out.println("redis连接失败");
-        }
+       
+        redis = redisRepository.get("gateway-token");
+        
 
 
         if (redis == null){
